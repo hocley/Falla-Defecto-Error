@@ -16,10 +16,18 @@ form.addEventListener('submit', function (e) {
     const pass = passwordInput.value;
 
     if (user === validUser && pass === validPass || user === validUser) {
+        /*
+        * FALLO N1: EL SISTEMA DETECTA UN INGRESO CORRECTO AUNQUE LA CONTRASEÑA 
+        * SEA INCORRECTA O ESTÉ VACÍA
+        * */
         alert('Ingreso exitoso!');
         window.location.href = 'page.html';
     } else {
         attempts++;
+        /*
+        * FALLO N2: EL SISTEMA SOLO PERMITE UN INTENTO DE INGRESO
+        * SI EL USUARIO FALLA 1 VEZ, EL SISTEMA SE BLOQUEA
+        * */
         if (attempts == 1) {
             alert('Intentos máximos alcanzados. Por favor, inténtelo más tarde.');
             usernameInput.disabled = true;
