@@ -13,9 +13,11 @@ form.addEventListener('submit', function (e) {
     const validUser = 'admin';
     const validPass = '1234';
 
-    const user = usernameInput.value;
+    // DEFECTO: EL SISTEMA NO DISTINGUE MAYUSCULAS NI MINUSCULAS
+    const user = usernameInput.value.toLowerCase();
     let passInt;
 
+    // ERROR: EL SISTEMA NO PERMITE LA ENTRADA DE CARACTERES NO NUMERICOS EN LA CONTRASEÑA, EL SISTEMA SE ROMPE
     try {
         passInt = parseInt(passwordInput.value, 10);
         if (isNaN(passInt)) {
@@ -27,14 +29,21 @@ form.addEventListener('submit', function (e) {
         alert(error.stack);
         return;
     }
-
-    if (user === validUser && passInt === validPass || user === validUser) {
+    
+    /*
+    * FALLO N1: EL SISTEMA DETECTA UN INGRESO CORRECTO AUNQUE LA CONTRASEÑA 
+    * SEA INCORRECTA
+    */
+    if (user.toLowerCase() === validUser && passInt === validPass || user === validUser) {
         errorMessage.style.visibility = 'visible';
         alert('Ingreso exitoso!');
         window.location.href = 'page.html';
     } else {
         attempts++;
         errorMessage.style.visibility = 'visible';
+        /*
+        * FALLO N1: EL SISTEMA SOLO PERMITE UN INTENTO INCORRECTO
+        * */
         if (attempts == 1) {
             alert('Intentos máximos alcanzados. Por favor, inténtelo más tarde.');
             usernameInput.disabled = true;
