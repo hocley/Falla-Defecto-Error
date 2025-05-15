@@ -4,6 +4,7 @@ const maxAttempts = 3;
 const form = document.querySelector('.login-form');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
+const errorMessage = document.getElementById('error-message');
 
 form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -13,23 +14,27 @@ form.addEventListener('submit', function (e) {
     const validPass = '1234';
 
     const user = usernameInput.value;
-    const pass = passwordInput.value;
-    /*
-    * DEFECTO: EL SISTEMA NO COMPARA MAYÚSCULAS Y MINÚSCULAS EN EL NOMBRE DE USUARIO
-    * */
-    if (user.toLowerCase() === validUser && pass === validPass || user === validUser) {
-        /*
-        * FALLO N1: EL SISTEMA DETECTA UN INGRESO CORRECTO AUNQUE LA CONTRASEÑA 
-        * SEA INCORRECTA O ESTÉ VACÍA
-        * */
+    let passInt;
+
+    try {
+        passInt = parseInt(passwordInput.value, 10);
+        if (isNaN(passInt)) {
+            throw new Error('La contraseña debe ser un número');
+        }
+    } catch (error) {
+        errorMessage.textContent =  error.message;
+        errorMessage.style.visibility = 'visible';
+        alert(error.stack);
+        return;
+    }
+
+    if (user === validUser && passInt === validPass || user === validUser) {
+        errorMessage.style.visibility = 'visible';
         alert('Ingreso exitoso!');
         window.location.href = 'page.html';
     } else {
         attempts++;
-        /*
-        * FALLO N2: EL SISTEMA SOLO PERMITE UN INTENTO DE INGRESO
-        * SI EL USUARIO FALLA 1 VEZ, EL SISTEMA SE BLOQUEA
-        * */
+        errorMessage.style.visibility = 'visible';
         if (attempts == 1) {
             alert('Intentos máximos alcanzados. Por favor, inténtelo más tarde.');
             usernameInput.disabled = true;
