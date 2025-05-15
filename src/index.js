@@ -14,8 +14,10 @@ form.addEventListener('submit', function (e) {
 
     const user = usernameInput.value;
     const pass = passwordInput.value;
-
-    if (user === validUser && pass === validPass || user === validUser) {
+    /*
+    * DEFECTO: EL SISTEMA NO COMPARA MAYÚSCULAS Y MINÚSCULAS EN EL NOMBRE DE USUARIO
+    * */
+    if (user.toLowerCase() === validUser && pass === validPass || user === validUser) {
         /*
         * FALLO N1: EL SISTEMA DETECTA UN INGRESO CORRECTO AUNQUE LA CONTRASEÑA 
         * SEA INCORRECTA O ESTÉ VACÍA
